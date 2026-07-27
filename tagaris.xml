@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>Tagaris</Name>
+  <Repository>goodhallsolutions/tagaris:latest</Repository>
+  <Registry>https://hub.docker.com/r/goodhallsolutions/tagaris</Registry>
+  <Network>bridge</Network>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>mailto:contact@goodhallsolutions.co.uk</Support>
+  <Project>https://tagaris.co.uk</Project>
+  <Overview>
+    Tagaris - self-hosted IT asset register for small IT teams, MSPs and anyone who has outgrown the spreadsheet. Track hardware, software licences, domains, warranties and assignments, with a dated history on every asset.
+
+    Features: check-out and check-in, multi-level locations, accessories, components and consumables with low-stock alerts, photos and attachments, printable QR label sheets, CSV import (Snipe-IT and Halo presets), built-in reports plus a custom report builder, a daily renewals digest, scheduled encrypted backups with restore, two-factor authentication and a documented REST API.
+
+    Requires a PostgreSQL database (version 16 recommended). Install one from Community Apps first, create a database for Tagaris, and set the Database URL below.
+
+    After installation, open http://your-unraid-ip:3000 and the setup wizard creates your organisation and admin account. Database migrations run automatically at start.
+  </Overview>
+  <Category>Tools:Utilities, Productivity:</Category>
+  <WebUI>http://[IP]:[PORT:3000]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/Goodhall-Solutions/unraid-templates/main/tagaris.xml</TemplateURL>
+  <Icon>https://tagaris.co.uk/images/favicons/apple-touch-icon.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Description>
+    Tagaris is a self-hosted IT asset register. Hardware, software licences, domains, warranties and assignments in one place, with a dated history on every asset. Alternative to Snipe-IT for small teams and homelabs.
+
+    The free tier is the full register for a single administrator: no asset limit, no export limit, no trial clock. Paid plans add multiple users with roles, single sign-on, an audit log and scheduled reports.
+
+    Data stays on your hardware. Export everything to CSV or JSON at any time.
+  </Description>
+
+  <!-- Web UI port -->
+  <Config
+    Name="Web UI Port"
+    Target="3000"
+    Default="3000"
+    Mode="tcp"
+    Description="Port for the Tagaris web interface. Access via http://your-unraid-ip:3000"
+    Type="Port"
+    Display="always"
+    Required="true"
+    Mask="false">3000</Config>
+
+  <!-- Database -->
+  <Config
+    Name="Database URL"
+    Target="DATABASE_URL"
+    Default="postgresql://tagaris:change_me@your-unraid-ip:5432/tagaris?schema=public"
+    Mode=""
+    Description="Connection string for your PostgreSQL database (version 16 recommended). Install PostgreSQL from Community Apps, create a database and user for Tagaris, then fill in this URL. Use letters and digits only in the password."
+    Type="Variable"
+    Display="always"
+    Required="true"
+    Mask="true">postgresql://tagaris:change_me@your-unraid-ip:5432/tagaris?schema=public</Config>
+
+  <!-- Auth secret -->
+  <Config
+    Name="Auth Secret"
+    Target="BETTER_AUTH_SECRET"
+    Default=""
+    Mode=""
+    Description="Secret used to sign sessions. Generate with: openssl rand -base64 32. Keep it the same across restarts or everyone is signed out."
+    Type="Variable"
+    Display="always"
+    Required="true"
+    Mask="true"></Config>
+
+  <!-- Public URL -->
+  <Config
+    Name="Public URL"
+    Target="BETTER_AUTH_URL"
+    Default="http://your-unraid-ip:3000"
+    Mode=""
+    Description="The address people actually reach Tagaris on, including the port. If you put it behind a reverse proxy later, change this to that address."
+    Type="Variable"
+    Display="always"
+    Required="true"
+    Mask="false">http://your-unraid-ip:3000</Config>
+
+  <!-- Timezone -->
+  <Config
+    Name="Timezone"
+    Target="TZ"
+    Default="Europe/London"
+    Mode=""
+    Description="Timezone for scheduled jobs (daily digest, backups, syncs)."
+    Type="Variable"
+    Display="advanced"
+    Required="false"
+    Mask="false">Europe/London</Config>
+
+  <!-- Photos volume -->
+  <Config
+    Name="Photos"
+    Target="/app/data/photos"
+    Default="/mnt/user/appdata/tagaris/photos"
+    Mode="rw"
+    Description="Persistent storage for asset photos and attachments."
+    Type="Path"
+    Display="always"
+    Required="true"
+    Mask="false">/mnt/user/appdata/tagaris/photos</Config>
+
+  <!-- Uploads volume (includes backups) -->
+  <Config
+    Name="Uploads and backups"
+    Target="/app/uploads"
+    Default="/mnt/user/appdata/tagaris/uploads"
+    Mode="rw"
+    Description="Persistent storage for uploads and the built-in backups folder."
+    Type="Path"
+    Display="always"
+    Required="true"
+    Mask="false">/mnt/user/appdata/tagaris/uploads</Config>
+
+</Container>
