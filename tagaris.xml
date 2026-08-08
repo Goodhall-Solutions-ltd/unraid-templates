@@ -11,9 +11,9 @@
   <Overview>
     Tagaris - self-hosted IT asset register for small IT teams, MSPs and anyone who has outgrown the spreadsheet. Track hardware, software licences, domains, warranties and assignments, with a dated history on every asset.
 
-    Features: check-out and check-in, multi-level locations, accessories, components and consumables with low-stock alerts, photos and attachments, printable QR label sheets, CSV import (Snipe-IT and Halo presets), built-in reports plus a custom report builder, a daily renewals digest, scheduled encrypted backups with restore, two-factor authentication and a documented REST API.
+    This template is the app on its own and needs a PostgreSQL database you already run. Requirements: a PostgreSQL server (version 16 recommended) this container can reach, with a database and a role that owns it. On Unraid you can install PostgreSQL from Community Apps first, or point at an existing server. Then set the Database URL below. If you would rather not run a separate database, install the "Tagaris-Bundled" template instead, which includes PostgreSQL in the one container.
 
-    Requires a PostgreSQL database (version 16 recommended). Install one from Community Apps first, create a database for Tagaris, and set the Database URL below.
+    Features: check-out and check-in, multi-level locations, accessories, components and consumables with low-stock alerts, photos and attachments, printable QR label sheets, CSV import (Snipe-IT and Halo presets), built-in reports plus a custom report builder, a daily renewals digest, scheduled encrypted backups with restore, two-factor authentication and a documented REST API.
 
     After installation, open http://your-unraid-ip:3000 and the setup wizard creates your organisation and admin account. Database migrations run automatically at start.
   </Overview>
@@ -29,6 +29,8 @@
   <DonateLink/>
   <Description>
     Tagaris is a self-hosted IT asset register. Hardware, software licences, domains, warranties and assignments in one place, with a dated history on every asset. Alternative to Snipe-IT for small teams and homelabs.
+
+    This template runs the app only and connects to a PostgreSQL database you provide. For an all-in-one container with the database built in, use the "Tagaris-Bundled" template.
 
     The free tier is the full register for a single administrator: no asset limit, no export limit, no trial clock. Paid plans add multiple users with roles, single sign-on, an audit log and scheduled reports.
 
@@ -51,13 +53,13 @@
   <Config
     Name="Database URL"
     Target="DATABASE_URL"
-    Default="postgresql://tagaris:change_me@your-unraid-ip:5432/tagaris?schema=public"
+    Default="postgresql://tagaris:change_me@your-postgres-host:5432/tagaris?schema=public"
     Mode=""
-    Description="Connection string for your PostgreSQL database (version 16 recommended). Install PostgreSQL from Community Apps, create a database and user for Tagaris, then fill in this URL. Use letters and digits only in the password."
+    Description="Connection string for the PostgreSQL server you provide (version 16 recommended). Create a database and a role that owns it, then fill in this URL. The role must be able to create tables so migrations can run on first start. Use letters and digits only in the password: characters like : @ / break the URL."
     Type="Variable"
     Display="always"
     Required="true"
-    Mask="true">postgresql://tagaris:change_me@your-unraid-ip:5432/tagaris?schema=public</Config>
+    Mask="true">postgresql://tagaris:change_me@your-postgres-host:5432/tagaris?schema=public</Config>
 
   <!-- Auth secret -->
   <Config
