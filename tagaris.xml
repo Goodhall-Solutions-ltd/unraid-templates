@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>Tagaris</Name>
-  <Repository>goodhallsolutions/tagaris:latest</Repository>
-  <Registry>https://hub.docker.com/r/goodhallsolutions/tagaris</Registry>
+  <Repository>goodhallsolutions/tagaris-bundled:latest</Repository>
+  <Registry>https://hub.docker.com/r/goodhallsolutions/tagaris-bundled</Registry>
   <Network>bridge</Network>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
@@ -11,11 +11,11 @@
   <Overview>
     Tagaris - self-hosted IT asset register for small IT teams, MSPs and anyone who has outgrown the spreadsheet. Track hardware, software licences, domains, warranties and assignments, with a dated history on every asset.
 
-    This template is the app on its own and needs a PostgreSQL database you already run. Requirements: a PostgreSQL server (version 16 recommended) this container can reach, with a database and a role that owns it. On Unraid you can install PostgreSQL from Community Apps first, or point at an existing server. Then set the Database URL below. If you would rather not run a separate database, install the "Tagaris-Bundled" template instead, which includes PostgreSQL in the one container.
+    This is the self-contained build for Unraid: PostgreSQL runs inside the same container, so there is nothing else to install. If you already run a PostgreSQL server and would rather point Tagaris at it, follow the dedicated-database guide at https://docs.tagaris.co.uk/self-host-external instead.
 
     Features: check-out and check-in, multi-level locations, accessories, components and consumables with low-stock alerts, photos and attachments, printable QR label sheets, CSV import (Snipe-IT and Halo presets), built-in reports plus a custom report builder, a daily renewals digest, scheduled encrypted backups with restore, two-factor authentication and a documented REST API.
 
-    After installation, open http://your-unraid-ip:3000 and the setup wizard creates your organisation and admin account. Database migrations run automatically at start.
+    The database, photos and backups persist in the appdata folders below. After installation, open http://your-unraid-ip:3000 and the setup wizard creates your organisation and admin account. Database migrations run automatically at start.
   </Overview>
   <Category>Tools:Utilities, Productivity:</Category>
   <WebUI>http://[IP]:[PORT:3000]/</WebUI>
@@ -30,7 +30,7 @@
   <Description>
     Tagaris is a self-hosted IT asset register. Hardware, software licences, domains, warranties and assignments in one place, with a dated history on every asset. Alternative to Snipe-IT for small teams and homelabs.
 
-    This template runs the app only and connects to a PostgreSQL database you provide. For an all-in-one container with the database built in, use the "Tagaris-Bundled" template.
+    This image bundles the app and its PostgreSQL database in one container, so it installs in a single click with no separate database container to run.
 
     The free tier is the full register for a single administrator: no asset limit, no export limit, no trial clock. Paid plans add multiple users with roles, single sign-on, an audit log and scheduled reports.
 
@@ -48,18 +48,6 @@
     Display="always"
     Required="true"
     Mask="false">3000</Config>
-
-  <!-- Database -->
-  <Config
-    Name="Database URL"
-    Target="DATABASE_URL"
-    Default="postgresql://tagaris:change_me@your-postgres-host:5432/tagaris?schema=public"
-    Mode=""
-    Description="Connection string for the PostgreSQL server you provide (version 16 recommended). Create a database and a role that owns it, then fill in this URL. The role must be able to create tables so migrations can run on first start. Use letters and digits only in the password: characters like : @ / break the URL."
-    Type="Variable"
-    Display="always"
-    Required="true"
-    Mask="true">postgresql://tagaris:change_me@your-postgres-host:5432/tagaris?schema=public</Config>
 
   <!-- Auth secret -->
   <Config
@@ -97,17 +85,17 @@
     Required="false"
     Mask="false">Europe/London</Config>
 
-  <!-- Photos volume -->
+  <!-- Data volume: database + photos -->
   <Config
-    Name="Photos"
-    Target="/app/data/photos"
-    Default="/mnt/user/appdata/tagaris/photos"
+    Name="Data"
+    Target="/app/data"
+    Default="/mnt/user/appdata/tagaris/data"
     Mode="rw"
-    Description="Persistent storage for asset photos and attachments."
+    Description="Persistent storage for the built-in PostgreSQL database and asset photos. Back this folder up; it holds your register."
     Type="Path"
     Display="always"
     Required="true"
-    Mask="false">/mnt/user/appdata/tagaris/photos</Config>
+    Mask="false">/mnt/user/appdata/tagaris/data</Config>
 
   <!-- Uploads volume (includes backups) -->
   <Config
