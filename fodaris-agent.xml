@@ -41,7 +41,7 @@
   <Config
     Name="Server URL"
     Target="FODARIS_SERVER_URL"
-    Default="https://192.168.1.10:8443"
+    Default="https://192.168.1.10:24443"
     Mode=""
     Description="URL of your Fodaris server. Use the server's IP address, not localhost."
     Type="Variable"
