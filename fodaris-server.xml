@@ -30,7 +30,7 @@
   <Description>
     Fodaris is a self-hosted monitoring and observability platform. Monitor Linux, Windows, and macOS endpoints, Docker containers, network devices (SNMP), websites, APIs, databases, and applications from a single dashboard.
 
-    Features include real-time metrics, alerting with email/Slack/Discord/Teams/PagerDuty, uptime monitoring, IPAM, log viewer, network topology mapping, and reporting. Alternative to Uptime Kuma, Zabbix, Beszel, and Checkmk for homelabs.
+    Features include real-time metrics, alerting with email, Slack, Discord, Teams, PagerDuty, ntfy, Gotify, Telegram and Pushover, uptime monitoring with public status pages and TV displays, IPAM, log viewer, network map, scheduled reports, maintenance windows, MFA, roles and 40+ integrations for self-hosted apps such as Pi-hole, Plex, Jellyfin, Home Assistant and Nextcloud.
 
     Data stays on your hardware. No cloud accounts, no telemetry.
   </Description>
